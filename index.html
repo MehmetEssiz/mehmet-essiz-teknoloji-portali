@@ -7,45 +7,87 @@
 
 <style>
 
+html{scroll-behavior:smooth}
+
 body{
 margin:0;
 font-family:Arial;
-background:#0b1220;
+background:#0a0f1e;
 color:white;
 }
 
+/* NAV */
+nav{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:center;
+gap:15px;
+padding:15px;
+background:rgba(10,15,30,0.9);
+backdrop-filter:blur(10px);
+z-index:999;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+padding:8px 12px;
+border-radius:8px;
+transition:.3s;
+}
+
+nav a:hover{
+background:#3b82f6;
+}
+
+/* HEADER */
 header{
+padding-top:100px;
 text-align:center;
-padding:40px;
-background:linear-gradient(90deg,#1e3a8a,#9333ea);
+padding-bottom:60px;
+background:linear-gradient(135deg,#1e3a8a,#9333ea);
 }
 
 header h1{
+font-size:50px;
 margin:0;
-font-size:42px;
 }
 
 header p{
-color:#cbd5e1;
+color:#d1d5db;
 }
 
-.container{
+/* SECTIONS */
+section{
+padding:80px 20px;
+max-width:1100px;
+margin:auto;
+}
+
+h2{
+color:#60a5fa;
+margin-bottom:20px;
+}
+
+/* GRID */
+.grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
-padding:20px;
 }
 
 .card{
 background:#111827;
 border-radius:15px;
 overflow:hidden;
-box-shadow:0 0 10px rgba(0,0,0,0.4);
-transition:0.3s;
+cursor:pointer;
+transition:.3s;
 }
 
 .card:hover{
-transform:scale(1.03);
+transform:translateY(-8px);
 }
 
 .card img{
@@ -58,29 +100,49 @@ object-fit:cover;
 padding:15px;
 }
 
-h2{
-color:#60a5fa;
-font-size:18px;
-}
-
-p{
-font-size:14px;
-color:#cbd5e1;
-}
-
-.weather{
-font-size:16px;
-padding:10px;
-}
-
+/* BUTTON */
 button{
-margin-top:10px;
 padding:10px;
 border:none;
 border-radius:10px;
 background:#3b82f6;
 color:white;
 cursor:pointer;
+margin-top:10px;
+}
+
+/* WEATHER + NEWS */
+.box{
+background:#111827;
+padding:15px;
+border-radius:15px;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111827;
+padding:20px;
+border-radius:15px;
+max-width:400px;
+text-align:center;
+}
+
+/* FOOTER */
+footer{
+text-align:center;
+padding:30px;
+background:#020617;
+color:#94a3b8;
 }
 
 </style>
@@ -88,70 +150,104 @@ cursor:pointer;
 
 <body>
 
-<header>
+<nav>
+<a href="#home">Ana</a>
+<a href="#weather">Hava</a>
+<a href="#news">Haber</a>
+<a href="#tech">Teknoloji</a>
+</nav>
+
+<header id="home">
 <h1>Mehmet Eşsiz</h1>
-<p>Teknoloji & Bilişim Portalı</p>
+<p>Gelişmiş Teknoloji & Bilişim Portalı</p>
 </header>
 
-<div class="container">
-
-<!-- HAVA DURUMU -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1501630834273-4b5604d2ee31" />
-<div class="card-content">
+<section id="weather">
 <h2>🌤 Hava Durumu</h2>
-<div id="weather" class="weather">Yükleniyor...</div>
+<div class="box" id="weatherBox">Yükleniyor...</div>
 <button onclick="getWeather()">Yenile</button>
-</div>
+</section>
+
+<section id="news">
+<h2>📰 Teknoloji Haberleri</h2>
+<div class="box" id="newsBox">Yükleniyor...</div>
+<button onclick="getNews()">Yenile</button>
+</section>
+
+<section id="tech">
+<h2>💻 Teknolojiler</h2>
+
+<div class="grid">
+
+<div class="card" onclick="openModal('Yapay Zekâ','AI sistemleri insan gibi öğrenebilir.')">
+<img src="https://images.unsplash.com/photo-1677442136019-21780ecad995">
+<div class="card-content">Yapay Zekâ</div>
 </div>
 
-<!-- YAPAY ZEKA -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1677442136019-21780ecad995" />
-<div class="card-content">
-<h2>🤖 Yapay Zekâ</h2>
-<p>AI teknolojileri artık hayatın her alanında kullanılıyor.</p>
-</div>
+<div class="card" onclick="openModal('Siber Güvenlik','Veri güvenliği sistemlerin korunmasını sağlar.')">
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b">
+<div class="card-content">Siber Güvenlik</div>
 </div>
 
-<!-- SİBER GÜVENLİK -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b" />
-<div class="card-content">
-<h2>🔐 Siber Güvenlik</h2>
-<p>Veri güvenliği günümüzde çok daha önemli hale geldi.</p>
-</div>
-</div>
-
-<!-- YAZILIM -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" />
-<div class="card-content">
-<h2>💻 Yazılım</h2>
-<p>Web ve mobil uygulamalar modern dünyanın temelidir.</p>
-</div>
+<div class="card" onclick="openModal('Bulut Bilişim','Veriler internet üzerinde saklanır.')">
+<img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa">
+<div class="card-content">Bulut Bilişim</div>
 </div>
 
 </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal()">
+<div class="modal-content">
+<h3 id="modalTitle"></h3>
+<p id="modalText"></p>
+</div>
+</div>
+
+<footer>
+© 2026 Mehmet Eşsiz | Teknoloji Portalı
+</footer>
 
 <script>
 
-// 🌤 CANLI HAVA DURUMU
+// 🌤 HAVA DURUMU
 async function getWeather(){
+const url="https://api.open-meteo.com/v1/forecast?latitude=41.01&longitude=28.97&current_weather=true";
+const res=await fetch(url);
+const data=await res.json();
 
-const url = "https://api.open-meteo.com/v1/forecast?latitude=41.01&longitude=28.97&current_weather=true";
+document.getElementById("weatherBox").innerHTML=
+"🌡 Sıcaklık: "+data.current_weather.temperature+"°C<br>💨 Rüzgar: "+data.current_weather.windspeed+" km/s";
+}
 
-const res = await fetch(url);
-const data = await res.json();
+// 📰 HABERLER
+async function getNews(){
+const url="https://api.rss2json.com/v1/api.json?rss_url=https://feeds.arstechnica.com/arstechnica/index";
+const res=await fetch(url);
+const data=await res.json();
 
-const temp = data.current_weather.temperature;
-const wind = data.current_weather.windspeed;
+let out="";
+data.items.slice(0,5).forEach(n=>{
+out+="• "+n.title+"<br>";
+});
 
-document.getElementById("weather").innerHTML =
-"Sıcaklık: " + temp + "°C <br> Rüzgar: " + wind + " km/s";
+document.getElementById("newsBox").innerHTML=out;
+}
+
+// MODAL
+function openModal(title,text){
+document.getElementById("modal").style.display="flex";
+document.getElementById("modalTitle").innerText=title;
+document.getElementById("modalText").innerText=text;
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
 }
 
 getWeather();
+getNews();
 
 </script>
 
